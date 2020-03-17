@@ -6,7 +6,7 @@ set -eu
 
 : "${DEVICE:=/dev/mmcblk0}"
 
-IMG=$(ls ./pi-gen/deploy/*talos.img | head -1)
+IMG=$(ls ./pi-gen/deploy/*runner.img | head -1)
 
 echo "Flashing " $IMG " ..."
 sudo dd bs=4M if=$IMG of=$DEVICE conv=fsync

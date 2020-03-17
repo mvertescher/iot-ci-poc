@@ -11,7 +11,7 @@ if [ "$EUID" -ne 0 ]; then
   exit
 fi
 
-IMG=$(ls ./pi-gen/deploy/*talos.img | head -1)
+IMG=$(ls ./pi-gen/deploy/*runner.img | head -1)
 
 # Super naive mount/unmount toggle
 if [ ! -d 'rootfs' ]; then
