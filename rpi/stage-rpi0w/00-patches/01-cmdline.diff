@@ -1,0 +1,5 @@
+--- stage-rpi0w.orig/rootfs/boot/cmdline.txt
++++ stage-rpi0w/rootfs/boot/cmdline.txt
+@@ -1 +1 @@
+-console=serial0,115200 console=tty1 root=ROOTDEV rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait quiet init=/usr/lib/raspi-config/init_resize.sh
++console=serial0,115200 console=tty1 root=ROOTDEV rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait quiet init=/usr/lib/raspi-config/init_resize.sh modules-load=dwc2,g_ether

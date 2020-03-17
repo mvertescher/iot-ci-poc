@@ -1,0 +1,7 @@
+--- stage-rpi0w.orig/rootfs/boot/config.txt
++++ stage-rpi0w/rootfs/boot/config.txt
+@@ -63,3 +63,4 @@ max_framebuffers=2
+
+ [all]
+ #dtoverlay=vc4-fkms-v3d
++dtoverlay=dwc2
