@@ -1,0 +1,13 @@
+[Unit]
+Description=Jenkins Swarm Client
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/jenkins/start.sh
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
