@@ -17,7 +17,14 @@ cp -r ../stage-common .
 
 echo "IMG_NAME='runner'
 DEPLOY_ZIP=0
+USE_QEMU=0
+LOCALE_DEFAULT=en_US.UTF-8
 TARGET_HOSTNAME=rpi
+KEYBOARD_KEYMAP=gb
+KEYBOARD_LAYOUT='English (UK)'
+TIMEZONE_DEFAULT='Europe/London'
+FIRST_USER_NAME=pi
+FIRST_USER_PASS=raspberry
 ENABLE_SSH=1
 STAGE_LIST='stage0 stage1 stage2 stage-common'
 " > config
