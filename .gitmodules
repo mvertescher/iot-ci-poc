@@ -4,3 +4,6 @@
 [submodule "rpi/mender-convert"]
 	path = rpi/mender-convert
 	url = https://github.com/mendersoftware/mender-convert
+[submodule "mender/integration"]
+	path = mender/integration
+	url = git@github.com:mendersoftware/integration.git
