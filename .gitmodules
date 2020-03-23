@@ -1,3 +1,6 @@
 [submodule "rpi/pi-gen"]
 	path = rpi/pi-gen
 	url = https://github.com/RPi-Distro/Pi-gen
+[submodule "rpi/mender-convert"]
+	path = rpi/mender-convert
+	url = https://github.com/mendersoftware/mender-convert
