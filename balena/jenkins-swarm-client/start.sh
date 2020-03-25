@@ -6,12 +6,12 @@
 SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2)
 
 java -jar ./swarm-client.jar \
-  -master http://jenkins.local:8080 \
+  -master $JENKINS_MASTER_URL \
   -name swarm-$SERIAL \
-  -username swarm \
-  -password swarm \
+  -username $JENKINS_USERNAME \
+  -password $JENKINS_PASSWORD \
   -description "I'm a Raspberry Pi!" \
   -executors 1 \
   -mode exclusive \
   -disableClientsUniqueId \
-  -retryInterval 60
+  -retryInterval 30
