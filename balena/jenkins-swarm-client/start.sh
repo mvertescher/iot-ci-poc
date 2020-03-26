@@ -3,6 +3,10 @@
 # Jenkins swarm client start script.
 #
 
+: "${JENKINS_MASTER_URL:=http://jenkins.local:8080}"
+: "${JENKINS_USERNAME:=swarm}"
+: "${JENKINS_PASSWORD:=swarm}"
+
 SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2)
 
 java -jar ./swarm-client.jar \
