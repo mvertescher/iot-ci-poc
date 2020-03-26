@@ -1,0 +1,7 @@
+version: '2'
+services:
+  jenkins-swarm-client:
+     build: ./jenkins-swarm-client
+     network_mode: "host"
+     privileged: true
+     restart: always
