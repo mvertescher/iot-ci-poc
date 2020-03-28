@@ -3,9 +3,10 @@
 //! Right now only information from USB events are used to generate labels.
 //! In the future, other sources could be used.
 
+use std::collections::HashMap;
 use std::fs::File;
-use std::path::PathBuf;
 use std::io::Write;
+use std::path::PathBuf;
 
 use futures_util::future::ready;
 use futures_util::stream::StreamExt;
@@ -29,7 +30,8 @@ async fn main() {
     env_logger::init();
     info!("{:?}", opt);
 
-    let mut labels = vec![format!("{}", opt.prefix)];
+    let mut labels = HashMap::new();
+    labels.insert("/prefix".to_string(), "gen".to_string());
 
     // TODO: On startup, inspect USB devices and add to labels.
     write_labels(&opt.output, &labels);
@@ -44,46 +46,46 @@ async fn main() {
         let device = event.device();
         info!("Hotplug event: {}: {}", event.event_type(),
             device.syspath().display());
+        let syspath = device.syspath().to_str().unwrap().to_string();
 
-        for attribute in device.attributes() {
-            let attr = attribute.name().to_str().unwrap();
-            if attr == "product" {
-                let value = attribute.value().unwrap().to_str().unwrap();
-                trace!("{} = {}", attr, value);
+        match event.event_type() {
+            EventType::Add => {
+                for attribute in device.attributes() {
+                    let attr = attribute.name().to_str().unwrap();
+                    if attr == "product" {
+                        let value = to_label(attribute.value().unwrap());
 
-                // Format value
-                let mut value = value.to_string();
-                value.make_ascii_lowercase();
-                let value = value.replace(" ", "");
-
-                match event.event_type() {
-                    EventType::Add => {
                         info!("adding label {}", value);
-                        labels.push(value);
+                        labels.insert(syspath.clone(), value);
                     }
-                    EventType::Remove => {
-                        // FIXME: We should keep track of and trigger on syspaths.
-                        info!("removing label {}", value);
-                        labels = labels.iter()
-                            .filter(|l| l.contains(&value))
-                            .map(|l| l.to_string())
-                            .collect();
-                    }
-                    _ => (),
                 }
-
-                write_labels(&opt.output, &labels);
             }
+            EventType::Remove => {
+                // info!("removing label {}", value);
+                labels.remove(&syspath);
+            }
+            _ => (),
         }
+        write_labels(&opt.output, &labels);
 
         ready(())
     }).await
 }
 
 /// Blow away the old labels file and rewrite labels.
-fn write_labels(output: &PathBuf, labels: &Vec<String>) {
+fn write_labels(output: &PathBuf, labels: &HashMap<String, String>) {
     let mut file = File::create(output).unwrap();
-    labels.iter().for_each(|l|
+    labels.values().for_each(|l|
         file.write_all(format!("{} ", l).as_bytes()).unwrap());
     file.flush().unwrap();
+}
+
+/// Convert OS strings to labels.
+fn to_label(value: &std::ffi::OsStr) -> String {
+    let value = value.to_str().unwrap();
+    let mut value = value.to_string();
+    value.make_ascii_lowercase();
+    let value = value.replace(" ", "");
+
+    value
 }
