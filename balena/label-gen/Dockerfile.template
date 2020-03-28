@@ -82,5 +82,8 @@ COPY --from=builder /build/app/target/release/label-gen .
 # Copy other folders required by the application. Example:
 # COPY --from=builder /build/app/assets assets
 
+# Ensure that the host propagates udev events
+ENV UDEV=on
+
 # Launch application
 CMD ["./label-gen", "labels"]
