@@ -44,7 +44,7 @@ async fn main() {
     let monitor = builder.listen().unwrap();
     monitor.for_each(|event| {
         let device = event.device();
-        info!("Hotplug event: {}: {}", event.event_type(),
+        trace!("Hotplug event: {}: {}", event.event_type(),
             device.syspath().display());
         let syspath = device.syspath().to_str().unwrap().to_string();
 
@@ -55,14 +55,14 @@ async fn main() {
                     if attr == "product" {
                         let value = to_label(attribute.value().unwrap());
 
-                        info!("adding label {}", value);
+                        info!("adding label '{}'", value);
                         labels.insert(syspath.clone(), value);
                     }
                 }
             }
             EventType::Remove => {
-                // info!("removing label {}", value);
-                labels.remove(&syspath);
+                let label = labels.remove(&syspath).unwrap();
+                info!("removing label '{}'", label);
             }
             _ => (),
         }
