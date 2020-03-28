@@ -1,0 +1,15 @@
+[package]
+authors = ["Matt Vertescher <mvertescher@gmail.com>"]
+description = "Jenkins executor label generator."
+edition = "2018"
+name = "label-gen"
+version = "0.1.0"
+
+[dependencies]
+env_logger = "0.7"
+futures-util = "0.3"
+log = "0.4"
+structopt = { version = "0.3", default-features = false }
+tokio = { version = "0.2", features = ["macros"] }
+tokio-udev = "0.2.0"
+udev = "0.2"
