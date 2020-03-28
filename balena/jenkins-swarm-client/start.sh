@@ -18,4 +18,4 @@ java -jar ./swarm-client.jar \
   -executors 1 \
   -mode exclusive \
   -disableClientsUniqueId \
-  -retryInterval 30
+  -retryInterval 60
