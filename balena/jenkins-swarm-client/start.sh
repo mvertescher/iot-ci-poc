@@ -9,6 +9,9 @@
 
 SERIAL=$(cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2)
 
+# Ensure the labels file exists
+echo "none" > /data/labels
+
 java -jar ./swarm-client.jar \
   -master $JENKINS_MASTER_URL \
   -name swarm-$SERIAL \
@@ -18,4 +21,5 @@ java -jar ./swarm-client.jar \
   -executors 1 \
   -mode exclusive \
   -disableClientsUniqueId \
+  -labelsFile /data/labels \
   -retryInterval 60
