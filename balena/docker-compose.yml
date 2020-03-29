@@ -5,8 +5,14 @@ services:
      network_mode: "host"
      privileged: true
      restart: always
+     volumes:
+       - 'data:/data'
   label-gen:
      build: ./label-gen
      network_mode: "host"
      privileged: true
      restart: always
+     volumes:
+       - 'data:/data'
+volumes:
+  data:
