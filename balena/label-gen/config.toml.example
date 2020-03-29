@@ -1,0 +1,4 @@
+# Sample configuration for devices to watch.
+devices = [
+{ id = "1915:521f", label = "nRF52940dongle" },
+]
