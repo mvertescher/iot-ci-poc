@@ -85,5 +85,8 @@ COPY --from=builder /build/app/target/release/label-gen .
 # Ensure that the host propagates udev events
 ENV UDEV=on
 
+# Copy the `label-gen` config file
+COPY --from=builder /build/app/config.toml .
+
 # Launch application
-CMD ["./label-gen", "labels"]
+CMD ["./label-gen", "/data/labels"]
