@@ -46,7 +46,9 @@ async fn main() {
     info!("{:?}", opt);
 
     // TODO: Add config path option
-    let config = std::fs::read_to_string("./config.toml").unwrap();
+    let config_path = "./config.toml";
+    let config = std::fs::read_to_string(config_path)
+        .expect("Failed to read from config file.");
     let config: Config = toml::from_str(&config).unwrap();
 
     let mut labels = HashMap::new();
