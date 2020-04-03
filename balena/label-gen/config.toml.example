@@ -1,4 +1,5 @@
 # Sample configuration for devices to watch.
 devices = [
 { id = "1915:521f", label = "nRF52940dongle" },
+{ id = "1366:1015", label = "jlink-nRF52940dk" },
 ]
