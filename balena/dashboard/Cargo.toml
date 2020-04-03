@@ -1,0 +1,20 @@
+[package]
+authors = ["Matt Vertescher <mvertescher@gmail.com>"]
+description = ""
+edition = "2018"
+name = "dashboard"
+version = "0.1.0"
+
+[dependencies]
+anyhow = "1"
+serde = "1"
+serde_derive = "1"
+
+[dependencies.yew]
+features = ["toml"]
+version = "0.14.2"
+
+[features]
+default = ["web_sys"]
+std_web = ["yew/std_web"]
+web_sys = ["yew/web_sys"]
