@@ -191,6 +191,29 @@ impl Component for Model {
 
     fn view(&self) -> Html {
         html! {
+            <>
+            // Header
+            <div>
+                <div class="header">
+                    <div class="flex bg-white border-b border-grey-200 fixed top-0 inset-x-0 z-100 h-16 items-center">
+                        <div class="w-full max-w-screen=x1 relative mx-auto px-6">
+                            <div class="flex items-center -mx-6">
+                                <div class="lg:w-1/4 xl:w-1/5 pl-6 pr-6 lg:pr-8">
+                                    { "Dashboard" }
+                                </div>
+                                <div class="flex flex-grow lg:w-3/4 xl:w-4/5">
+                                    { "" }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            // Padding
+            <div class="py-10"/>
+
+            // Body
             <div class="container mx-auto">
                 <div class="flex bg-grey-200 py-8">
                     <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
@@ -234,6 +257,7 @@ impl Component for Model {
                     </button>
                 </div>
             </div>
+            </>
         }
     }
 }
