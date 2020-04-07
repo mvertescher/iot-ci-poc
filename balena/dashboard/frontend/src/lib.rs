@@ -7,6 +7,9 @@ use yew::services::fetch::{FetchService, FetchTask, Request, Response};
 use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 
+#[global_allocator]
+static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+
 type AsBinary = bool;
 
 pub enum Format {
@@ -189,7 +192,7 @@ impl Component for Model {
     fn view(&self) -> Html {
         html! {
             <div class="container mx-auto">
-                <div class="flex bg-grey-200">
+                <div class="flex bg-grey-200 py-8">
                     <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
                             onclick=self.link.callback(|_| Msg::FetchData(Format::Json, false))>
                         { "Fetch Data" }
@@ -208,7 +211,7 @@ impl Component for Model {
                         { self.view_data() }
                     </span>
                 </div>
-                <div class="flex bg-grey-200">
+                <div class="flex bg-grey-200 py-8">
                     <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
                             disabled=self.ws.is_some()
                             onclick=self.link.callback(|_| WsAction::Connect)>

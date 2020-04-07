@@ -9,6 +9,7 @@ version = "0.1.0"
 anyhow = "1"
 serde = "1"
 serde_derive = "1"
+wee_alloc = "0.4.5"
 
 [dependencies.yew]
 features = ["toml"]
