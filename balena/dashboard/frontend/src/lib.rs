@@ -153,7 +153,7 @@ impl Component for Model {
                     });
                     let task = self
                         .ws_service
-                        .connect("ws://localhost:9001/", callback, notification)
+                        .connect("ws://localhost:8080/ws/", callback, notification)
                         .unwrap();
                     self.ws = Some(task);
                 }
