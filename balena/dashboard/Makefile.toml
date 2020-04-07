@@ -1,0 +1,30 @@
+# Dashboard tasks
+
+[config]
+skip_core_tasks = true
+
+[env]
+RUST_BACKTRACE = "full"
+
+[tasks.default]
+alias = "list"
+description = "Default task to list all tasks"
+workspace = false
+
+[tasks.list]
+description = "List all tasks"
+workspace = false
+script = [ "cargo make --no-workspace --list-all-steps" ]
+
+[tasks.web]
+description = "Web deploy the dashboard locally"
+workspace = false
+script = ['''
+cd frontend
+cargo build --target wasm32-unknown-unknown
+wasm-bindgen --target web --no-typescript --out-dir ../backend/static \
+	--out-name wasm ../target/wasm32-unknown-unknown/debug/dashboard.wasm
+cd ..
+
+cargo run --bin backend
+''']

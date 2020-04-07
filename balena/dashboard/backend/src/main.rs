@@ -17,7 +17,7 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "actix_web=info");
     env_logger::init();
 
-    HttpServer::new(||  {
+    HttpServer::new(|| {
         App::new()
             // enable logger
             .wrap(middleware::Logger::default())
@@ -25,7 +25,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/ws/").route(web::get().to(ws_index)))
             .service(
                 // static files
-                fs::Files::new("/", "./static/").index_file("index.html"),
+                fs::Files::new("/", "./static/").index_file("index.html")
             )
     })
     .bind("127.0.0.1:8080")?
@@ -39,7 +39,7 @@ async fn ws_index(r: HttpRequest, stream: web::Payload) -> Result<HttpResponse, 
     let res = ws::start(MyWebSocket::new(), &r, stream);
     println!("{:?}", res);
     res
-} 
+}
 
 /// websocket connection is long running connection, it easier
 /// to handle with an actor
@@ -55,16 +55,12 @@ impl Actor for MyWebSocket {
     /// Method is called on actor start. We start the heartbeat process here.
     fn started(&mut self, ctx: &mut Self::Context) {
         self.hb(ctx);
-    } 
+    }
 }
 
 /// Handler for `ws::Message`
 impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
-    fn handle(
-        &mut self,
-        msg: Result<ws::Message, ws::ProtocolError>,
-        ctx: &mut Self::Context,
-    ) {
+    fn handle(&mut self, msg: Result<ws::Message, ws::ProtocolError>, ctx: &mut Self::Context) {
         // process websocket messages
         println!("WS: {:?}", msg);
         match msg {
