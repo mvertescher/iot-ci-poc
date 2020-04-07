@@ -1,4 +1,4 @@
-#![recursion_limit = "256"]
+#![recursion_limit = "512"]
 
 use anyhow::Error;
 use serde_derive::{Deserialize, Serialize};
@@ -188,35 +188,48 @@ impl Component for Model {
 
     fn view(&self) -> Html {
         html! {
-            <div>
-                <nav class="menu">
-                    <button onclick=self.link.callback(|_| Msg::FetchData(Format::Json, false))>
+            <div class="container mx-auto">
+                <div class="flex bg-grey-200">
+                    <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
+                            onclick=self.link.callback(|_| Msg::FetchData(Format::Json, false))>
                         { "Fetch Data" }
                     </button>
-                    <button onclick=self.link.callback(|_| Msg::FetchData(Format::Json, true))>
+                    <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
+                            onclick=self.link.callback(|_| Msg::FetchData(Format::Json, true))>
                         { "Fetch Data [binary]" }
                     </button>
-                    <button onclick=self.link.callback(|_| Msg::FetchData(Format::Toml, false))>
+                    <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
+                            onclick=self.link.callback(|_| Msg::FetchData(Format::Toml, false))>
                         { "Fetch Data [toml]" }
                     </button>
-                    { self.view_data() }
-                    <button disabled=self.ws.is_some()
+                </div>
+                <div class="bg-gray-200 p-4">
+                    <span class="block text-gray-700 text-center bg-gray-400 px-4 py-2">
+                        { self.view_data() }
+                    </span>
+                </div>
+                <div class="flex bg-grey-200">
+                    <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
+                            disabled=self.ws.is_some()
                             onclick=self.link.callback(|_| WsAction::Connect)>
                         { "Connect To WebSocket" }
                     </button>
-                    <button disabled=self.ws.is_none()
+                    <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
+                            disabled=self.ws.is_none()
                             onclick=self.link.callback(|_| WsAction::SendData(false))>
                         { "Send To WebSocket" }
                     </button>
-                    <button disabled=self.ws.is_none()
+                    <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
+                           disabled=self.ws.is_none()
                             onclick=self.link.callback(|_| WsAction::SendData(true))>
                         { "Send To WebSocket [binary]" }
                     </button>
-                    <button disabled=self.ws.is_none()
+                    <button class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2"
+                            disabled=self.ws.is_none()
                             onclick=self.link.callback(|_| WsAction::Disconnect)>
                         { "Close WebSocket connection" }
                     </button>
-                </nav>
+                </div>
             </div>
         }
     }
