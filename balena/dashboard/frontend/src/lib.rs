@@ -3,6 +3,7 @@
 use anyhow::Error;
 use serde_derive::{Deserialize, Serialize};
 use yew::format::{Json, Nothing, Toml};
+use yew::services::console::ConsoleService;
 use yew::services::fetch::{FetchService, FetchTask, Request, Response};
 use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
@@ -149,7 +150,12 @@ impl Component for Model {
             }
             Msg::WsAction(action) => match action {
                 WsAction::Connect => {
-                    let callback = self.link.callback(|Json(data)| Msg::WsReady(data));
+                    let callback = self.link.callback(|Json(data)| {
+                        let mut console = ConsoleService::new();
+                        console.log(&format!("{:?}", data));
+
+                        Msg::WsReady(data)
+                    });
                     let notification = self.link.callback(|status| match status {
                         WebSocketStatus::Opened => Msg::Ignore,
                         WebSocketStatus::Closed | WebSocketStatus::Error => WsAction::Lost.into(),
@@ -191,7 +197,7 @@ impl Component for Model {
     }
 
     fn view(&self) -> Html {
-        let mut console = yew::services::console::ConsoleService::new();
+        let mut console = ConsoleService::new();
         console.log("view refresh...");
 
         html! {

@@ -111,7 +111,8 @@ impl MyWebSocket {
     /// Send log data to the client for testing.
     fn log(&self, ctx: &mut <Self as Actor>::Context) {
         ctx.run_interval(Duration::from_secs(3), |act, ctx| {
-            ctx.text("full yolo here");
+            println!("Sending json...");
+            ctx.text(r#"{lorem: "ipsum"}"#);
         });
     }
 }
