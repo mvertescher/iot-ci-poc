@@ -7,6 +7,7 @@ version = "0.1.0"
 
 [dependencies]
 anyhow = "1"
+protocol = { path = "../protocol" }
 serde = "1"
 serde_derive = "1"
 wee_alloc = "0.4.5"

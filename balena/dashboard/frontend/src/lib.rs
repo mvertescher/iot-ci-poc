@@ -162,6 +162,7 @@ impl Component for Model {
                 }
                 WsAction::SendData(binary) => {
                     let request = WsRequest { value: 321 };
+
                     if binary {
                         self.ws.as_mut().unwrap().send_binary(Json(&request));
                     } else {
@@ -190,6 +191,9 @@ impl Component for Model {
     }
 
     fn view(&self) -> Html {
+        let mut console = yew::services::console::ConsoleService::new();
+        console.log("view refresh...");
+
         html! {
             <>
             // Header
