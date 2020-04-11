@@ -2,7 +2,7 @@
 
 use anyhow::Error;
 use serde_derive::{Deserialize, Serialize};
-use yew::format::{Json};
+use yew::format::{Cbor, Json};
 use yew::services::console::ConsoleService;
 use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
@@ -59,9 +59,9 @@ pub struct Model {
 
 impl Model {
     fn ws_connect(&mut self) {
-        let callback = self.link.callback(|Json(data)| {
+        let callback = self.link.callback(|Cbor(data)| {
             let mut console = ConsoleService::new();
-            console.log(&format!("{:?}", data));
+            console.log(&format!("cbor: {:?}", data));
 
             Msg::WsReady(data)
         });
@@ -127,8 +127,8 @@ impl Component for Model {
     }
 
     fn view(&self) -> Html {
-        let mut console = ConsoleService::new();
-        console.log("view refresh...");
+        // let mut console = ConsoleService::new();
+        // console.log("view refresh...");
 
         html! {
             <>

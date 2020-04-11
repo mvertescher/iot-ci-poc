@@ -54,7 +54,7 @@ impl Actor for MyWebSocket {
 
     /// Method is called on actor start. We start the heartbeat process here.
     fn started(&mut self, ctx: &mut Self::Context) {
-        self.hb(ctx);
+        // self.hb(ctx);
         self.log(ctx);
     }
 }
@@ -111,8 +111,9 @@ impl MyWebSocket {
     /// Send log data to the client for testing.
     fn log(&self, ctx: &mut <Self as Actor>::Context) {
         ctx.run_interval(Duration::from_secs(3), |act, ctx| {
-            println!("Sending json...");
-            ctx.text(r#"{lorem: "ipsum"}"#);
+            println!("Sending test message...");
+            let msg = protocol::Message::log("Test message.".to_string());
+            ctx.binary(msg.encode());
         });
     }
 }
