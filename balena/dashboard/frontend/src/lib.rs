@@ -2,7 +2,7 @@
 
 use anyhow::Error;
 use serde_derive::{Deserialize, Serialize};
-use yew::format::{Cbor, Json};
+use yew::format::{Json, Binary};
 use yew::services::console::ConsoleService;
 use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
@@ -59,11 +59,13 @@ pub struct Model {
 
 impl Model {
     fn ws_connect(&mut self) {
-        let callback = self.link.callback(|Cbor(data)| {
+        let callback = self.link.callback(|data: Binary| {
+            let msg = protocol::Message::decode(&data.unwrap());
             let mut console = ConsoleService::new();
-            console.log(&format!("cbor: {:?}", data));
+            console.log(&format!("cbor: {:?}", msg));
 
-            Msg::WsReady(data)
+            let msg = WsResponse { value: 0 } ;
+            Msg::WsReady(Ok(msg))
         });
         let notification = self.link.callback(|status| match status {
             WebSocketStatus::Opened => Msg::Ignore,
@@ -71,7 +73,7 @@ impl Model {
         });
         let task = self
             .ws_service
-            .connect("ws://localhost:8080/ws/", callback, notification)
+            .connect_binary("ws://localhost:8080/ws/", callback, notification)
             .unwrap();
 
         self.ws = Some(task);
