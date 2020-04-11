@@ -24,7 +24,7 @@ impl Message {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Log {
-    data: String,
+    pub data: String,
 }
 
 

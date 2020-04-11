@@ -21,7 +21,7 @@ pub enum WsAction {
 
 pub enum Msg {
     WsAction(WsAction),
-    WsReady(Result<WsResponse, Error>),
+    WsReady(Result<protocol::Message, Error>),
     Ignore,
 }
 
@@ -53,18 +53,17 @@ pub struct WsResponse {
 pub struct Model {
     ws_service: WebSocketService,
     link: ComponentLink<Model>,
-    data: Option<u32>,
     ws: Option<WebSocketTask>,
+    logs: Vec<String>,
 }
 
 impl Model {
     fn ws_connect(&mut self) {
         let callback = self.link.callback(|data: Binary| {
-            let msg = protocol::Message::decode(&data.unwrap());
-            let mut console = ConsoleService::new();
-            console.log(&format!("cbor: {:?}", msg));
+            let msg = protocol::Message::decode(&data.unwrap()).unwrap();
+            // let mut console = ConsoleService::new();
+            // console.log(&format!("cbor: {:?}", msg));
 
-            let msg = WsResponse { value: 0 } ;
             Msg::WsReady(Ok(msg))
         });
         let notification = self.link.callback(|status| match status {
@@ -88,8 +87,8 @@ impl Component for Model {
         let mut model = Model {
             ws_service: WebSocketService::new(),
             link,
-            data: None,
             ws: None,
+            logs: Vec::new(),
         };
         model.ws_connect();
 
@@ -119,7 +118,12 @@ impl Component for Model {
                 }
             },
             Msg::WsReady(response) => {
-                self.data = response.map(|data| data.value).ok();
+                use protocol::Message;
+                match response.unwrap() {
+                    Message::Log(log) => {
+                        self.logs.push(log.data);
+                    }
+                }
             }
             Msg::Ignore => {
                 return false;
@@ -129,9 +133,6 @@ impl Component for Model {
     }
 
     fn view(&self) -> Html {
-        // let mut console = ConsoleService::new();
-        // console.log("view refresh...");
-
         html! {
             <>
             // Header
@@ -178,6 +179,12 @@ impl Component for Model {
                             onclick=self.link.callback(|_| WsAction::Disconnect)>
                         { "Close WebSocket connection" }
                     </button>
+                </div>
+
+                <div class="flex bg-grey-200 py-8">
+                     <ul class="item-list">
+                         { for self.logs.iter() }
+                     </ul>
                 </div>
             </div>
             </>
