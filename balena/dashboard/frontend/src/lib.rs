@@ -133,6 +133,14 @@ impl Component for Model {
     }
 
     fn view(&self) -> Html {
+        let view_log = |log| {
+            html! {
+                <div class="flex-1 text-gray-700 text-left bg-gray-200 px-4 py-2 m-2">
+                    { log }
+                </div>
+            }
+        };
+
         html! {
             <>
             // Header
@@ -181,9 +189,9 @@ impl Component for Model {
                     </button>
                 </div>
 
-                <div class="flex bg-grey-200 py-8">
-                     <ul class="item-list">
-                         { for self.logs.iter() }
+                <div class="flex bg-grey-200">
+                     <ul class="flex-1">
+                         { for self.logs.iter().map(view_log) }
                      </ul>
                 </div>
             </div>
