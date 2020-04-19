@@ -1,10 +1,10 @@
 //! Client/server websocket protocol
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Message {
-    Log(Log)
+    Log(Log),
 }
 
 impl Message {
@@ -26,5 +26,3 @@ impl Message {
 pub struct Log {
     pub data: String,
 }
-
-

@@ -25,7 +25,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/ws/").route(web::get().to(ws_index)))
             .service(
                 // static files
-                fs::Files::new("/", "./backend/static/").index_file("index.html")
+                fs::Files::new("/", "./backend/static/").index_file("index.html"),
             )
     })
     .bind("127.0.0.1:8080")?

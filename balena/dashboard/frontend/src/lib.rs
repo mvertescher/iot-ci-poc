@@ -2,7 +2,7 @@
 
 use anyhow::Error;
 use serde_derive::{Deserialize, Serialize};
-use yew::format::{Json, Binary};
+use yew::format::{Binary, Json};
 use yew::services::console::ConsoleService;
 use yew::services::websocket::{WebSocketService, WebSocketStatus, WebSocketTask};
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
